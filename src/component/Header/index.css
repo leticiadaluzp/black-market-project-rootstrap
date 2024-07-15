@@ -1,20 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Merienda:wght@500&display=swap");
 header {
 	display: flex;
+	box-sizing: border-box;
 	justify-content: space-between;
-	padding: 0 4px;
+	padding: 2px 10px;
 	margin: 0 auto;
 	width: 100%;
+	height: 40px;
 }
 
 .logo-container {
 	display: flex;
 	align-items: center;
+	padding-left: 4px;
+	gap: 4px;
 }
 
 .logo-container h1 {
-	font-size: 1.4rem;
+	font-size: 0.9rem;
+	font-family: "Merienda", cursive;
+}
+
+.logo-container img {
+	width: 30px;
+	height: 30px;
 }
 
 .buttons-container {
 	display: flex;
+	padding-right: 4px;
+}
+
+.sign-button {
+	background-color: #242424;
+	color: whitesmoke;
+	font-family: "Poppins", sans-serif;
+	height: 100%;
+	border-style: none;
+	transition: all 200ms ease-in-out;
+}
+
+@media (min-width: 768px) {
+	header {
+		height: 60px;
+		/* border-bottom: 1px solid whitesmoke; */
+		padding: 0 10%;
+		box-shadow: 0px 0px 28px 0px rgb(184, 162, 162);
+	}
+	.sign-button:hover {
+		color: #f7e8e8;
+		background-color: brown;
+	}
+
+	.logo-container h1 {
+		font-size: 1.5rem;
+		display: inline;
+	}
+
+	.sign-button {
+		font-size: 1rem;
+	}
 }
