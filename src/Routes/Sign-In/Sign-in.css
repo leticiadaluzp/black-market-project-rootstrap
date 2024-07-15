@@ -57,7 +57,9 @@ form {
 		border: 1px solid whitesmoke;
 		border-radius: 20px;
 	}
-
+	.submit-button {
+		font-size: 1.2rem;
+	}
 	.submit-button:hover {
 		background-color: rgb(134, 15, 34);
 	}
@@ -70,7 +72,5 @@ form {
 		max-width: 400px;
 	}
 
-	.submit-button {
-		font-size: 1.2rem;
-	}
+
 }
