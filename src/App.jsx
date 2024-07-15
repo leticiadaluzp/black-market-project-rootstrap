@@ -1,4 +1,5 @@
 import {Header} from './component'
+import { SignIn } from './Routes'
 import './App.css'
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
   return (
     <>
       <Header/>
+      <SignIn/>
     </>
   )
 }
