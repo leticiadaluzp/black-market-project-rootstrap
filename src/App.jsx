@@ -1,12 +1,13 @@
 import {Header} from './component'
 import './App.css'
-import SignUpForm from './component/SignUpForm/SignUpForm'
+import {SignUpForm} from './component/SignUpForm'
 
 function App() {
 
   return (
     <>
       <Header/>
+      <SignUpForm/> 
     </>
   )
 }
