@@ -1,12 +1,23 @@
-import {Header} from './component'
-import { SignIn } from './Routes'
+import { useEffect, useState } from 'react'
+import { Header, Loader } from './component'
+import { Outlet } from 'react-router-dom'
 
 function App() {
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
+  useEffect(() => {
+    renderPage();
+  }, [])
+
+  function renderPage() {
+    setIsPageLoading(false);
+  }
   return (
     <>
       <Header/>
-      <SignIn/>
+      <main>
+        {isPageLoading ? <Loader/> : <Outlet/>}
+      </main>
     </>
   )
 }
