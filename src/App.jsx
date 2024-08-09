@@ -1,12 +1,12 @@
 import {Header} from './component'
-import { Home } from './Routes'
+import { SignIn } from './Routes'
 
 function App() {
 
   return (
     <>
       <Header/>
-      <Home/>
+      <SignIn/>
     </>
   )
 }
