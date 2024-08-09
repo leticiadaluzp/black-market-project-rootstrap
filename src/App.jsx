@@ -1,11 +1,12 @@
 import {Header} from './component'
-import './App.css'
+import { SignIn } from './Routes'
 
 function App() {
 
   return (
     <>
       <Header/>
+      <SignIn/>
     </>
   )
 }
