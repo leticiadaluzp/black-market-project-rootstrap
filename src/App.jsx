@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Header, Loader } from './component'
 import { Outlet } from 'react-router-dom'
+
+import { Header, Loader } from './component'
 
 function App() {
   const [isPageLoading, setIsPageLoading] = useState(true);
