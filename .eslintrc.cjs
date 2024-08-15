@@ -17,5 +17,9 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'indent': ['error', 2],
+    "react/prop-types": "on",
+    "react/no-unescaped-entities": "on",
+    "eol-last": ["error", "always"]
   },
 }
