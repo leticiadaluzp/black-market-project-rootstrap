@@ -13,8 +13,8 @@ export function Header() {
           </Link>
         </div>
         <ul className='flex md:pr-0.25  md:gap-2 box-border'>
-          <ItemMenu text={'Sign In'} path={'SignIn'}/>
-          <ItemMenu text={'Sign Up'} path={''}/>
+          <ItemMenu text='Sign In' path='SignIn'/>
+          <ItemMenu text='Sign Up' path=''/>
         </ul>
       </header>
     </>
