@@ -9,9 +9,7 @@ export function Home(){
   useEffect(() => {
     const authStatus = checkAuth(); 
     setIsAuthenticated(authStatus);
-    console.log("en el useEffect");
     if (authStatus) {
-      console.log("en el if")
       fetchProducts();
     }
   }, []);
@@ -39,6 +37,7 @@ export function Home(){
       setProducts(response.data.data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
+      //TO DO: ver como manejamos este error
     }
   };
 

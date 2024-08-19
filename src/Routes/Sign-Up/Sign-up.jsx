@@ -26,8 +26,7 @@ export function SignUp(){
           password,
           password_confirmation: confirmPassword
         }
-      });
-      console.log("User registration successful:", response);
+      });;
       //TO DO: mostrar mensaje de registro exitoso y luego esperar x segundos para dirigir al sign in
       navigate("/SignIn");
     } catch (error){

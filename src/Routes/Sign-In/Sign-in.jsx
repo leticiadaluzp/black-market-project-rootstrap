@@ -21,7 +21,6 @@ export function SignIn (){
           password,
         }
       });
-      console.log("User login successful:", response);
       const accessToken = response.headers['access-token'];
       const uid = response.headers['uid'];
       const client = response.headers['client'];
