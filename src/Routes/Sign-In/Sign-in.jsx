@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Input, Loader } from "../../component";
 import { axiosInstance } from "../../component/axios/axios";
+import { UserSessionContext } from "../../component/context/UserSessionProvider";
 
 export function SignIn (){
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export function SignIn (){
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(""); 
   const navigate = useNavigate();
+  const { handleLogin } = useContext(UserSessionContext)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,7 +31,8 @@ export function SignIn (){
       localStorage.setItem('uid', uid);
       localStorage.setItem('client', client);
 
-      navigate("/");
+      handleLogin();
+      navigate("/HomePage");
     } catch (error){
         if (error.response && error.response.status === 401) {
           setError(error.response.data.error);
