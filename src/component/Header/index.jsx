@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { ItemMenu } from '../index.js';
 import { UserSessionContext } from '../context/UserSessionProvider';
 import logo from '../../assets/logo.png';
+import { ToastContainer } from 'react-toastify';
 
 export function Header() {
   const { isLoggedIn, setIsLoggedIn} = useContext(UserSessionContext);
@@ -16,6 +17,7 @@ export function Header() {
 
   return (
     <>
+      <ToastContainer />
       {isLoggedIn ? (
         <header className='flex box-border justify-between w-full h-10 py-0.5 px-2.5 md:h-16 md:py-0 md:px-[10%] md:shadow-extra'>
           <div>
