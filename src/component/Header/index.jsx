@@ -30,7 +30,9 @@ export function Header() {
       console.log("response: ",response)
       if (response.data.success) {
         removeAuth();
-        toast.success('Successfully signed out!');
+        toast.success('Successfully signed out.', {
+          autoClose: 1500, 
+        });
       } else {
         toast.error('Failed to sign out. Please try again.');
       }

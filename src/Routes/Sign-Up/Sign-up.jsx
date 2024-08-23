@@ -33,7 +33,9 @@ export function SignUp(){
         }
       });;
 
-      toast.success("User registered successfully!")
+      toast.success("User registered successfully!", {
+        autoClose: 1500, 
+      });
       
       const responseSignIn = await axiosInstance.post("/users/sign_in", {
         user: {
@@ -50,12 +52,13 @@ export function SignUp(){
       localStorage.setItem('client', client);
 
       handleLogin();
+      // We should navigate to the HomePage or to the sign in?
       navigate("/HomePage");
     } catch (error){
         if (error.response && error.response.status === 422) {
-            setGeneralError(error.response.data.errors.full_messages || []);
+          setGeneralError(error.response.data.errors.full_messages || []);
         } else {
-            setGeneralError("An unexpected error occurred.");
+          toast.error('Failed to sign up. Please try again.');
         }
     } finally {
         setIsLoading(false);
