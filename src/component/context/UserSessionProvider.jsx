@@ -9,7 +9,7 @@ export const UserSessionProvider = ({children}) => {
   };
 
   return (
-    <UserSessionContext.Provider value={{isLoggedIn, handleLogin}}>
+    <UserSessionContext.Provider value={{isLoggedIn, setIsLoggedIn, handleLogin}}>
       {children}
     </UserSessionContext.Provider>
   );

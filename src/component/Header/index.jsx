@@ -3,16 +3,45 @@ import { useContext } from "react";
 import { ItemMenu } from '../index.js';
 import { UserSessionContext } from '../context/UserSessionProvider';
 import logo from '../../assets/logo.png';
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import { axiosInstance } from "../../component/axios/axios";
 
 export function Header() {
   const { isLoggedIn, setIsLoggedIn} = useContext(UserSessionContext);
 
-  const logOut = () => {
+  const removeAuth = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('uid');
     localStorage.removeItem('client');
     setIsLoggedIn(false);
+  };
+
+  const logOut = async () => {
+    try {
+      const response = await axiosInstance.delete('/users/sign_out', {
+        headers: {
+          'access-token': localStorage.getItem('accessToken'),
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client')
+        }
+      });
+      console.log("response: ",response)
+      if (response.data.success) {
+        removeAuth();
+        toast.success('Successfully signed out!');
+      } else {
+        toast.error('Failed to sign out. Please try again.');
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        toast.error('User was not found or was not logged in.');
+      } else {
+        toast.error('An unexpected error occurred.');
+        console.log("response: ", error)
+      }
+    }
   };
 
   return (
