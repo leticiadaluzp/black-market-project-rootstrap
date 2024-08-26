@@ -1,11 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
+import { UserSessionProvider } from './component/context/UserSessionProvider'
 import {router} from './Router'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserSessionProvider>
+      <RouterProvider router={router} />
+    </UserSessionProvider>
   </React.StrictMode>,
 )
