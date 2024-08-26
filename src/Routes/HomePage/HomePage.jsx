@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {axiosInstance} from "../../component/axios/axios";
+import { Loader } from "../../component";
 
 export function HomePage(){
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
   
     useEffect(() => {
-      const authStatus = checkAuth(); 
-      setIsAuthenticated(authStatus);
-      if (authStatus) {
+      setIsLoading(true);
+      const authStatus = handleAuthentication();
+      if (!authStatus) {
+        navigate('/SignIn');
+      } else {
         fetchProducts();
       }
     }, []);
+
+    const handleAuthentication = () => {
+      const authStatus = checkAuth();
+      setIsAuthenticated(authStatus);
+      return authStatus;
+    };
   
     const checkAuth = () => {
       const storedAccessToken = localStorage.getItem('accessToken');
@@ -37,36 +49,37 @@ export function HomePage(){
       } catch (error) {
         console.error("Failed to fetch products:", error);
         //TO DO: how should we handle this error?
+      } finally {
+        setIsLoading(false);
       }
     };
+
+    if (!isAuthenticated || isLoading) {
+      return <Loader/>
+    }
   
     return(
       <>
-        {isAuthenticated ? (
-           <section>
-              <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl text-center mb-6'>Explore Our Products</h1>
-              <div>
-                <ul className='flex flex-wrap justify-center'>
-                  {products.map(({ title, pictures, description, unit_price }) => (
-                    <li key={title} className='m-4 w-64'>
-                      <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
-                        <img className='h-48 w-full object-contain p-2' src={pictures[0]} alt={title} />
-                        <div className='p-4 flex-grow'>
-                          <h3 className='font-bold text-lg text-gray-800 mb-2'>{title}</h3>
-                          <p className='text-gray-500 text-sm'>{description}</p>
-                          <span className='block mt-2 font-semibold text-xl text-black'>{unit_price}</span>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-        ) : (
-          <div >
-            {/* TO DO: should we put something here? */}
+        <section>
+          <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl text-center mb-6'>Explore Our Products</h1>
+          <div>
+            <ul className='flex flex-wrap justify-center'>
+              {products.map(({ title, pictures, description, unit_price }) => (
+                <li key={title} className='m-4 w-64'>
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
+                    <img className='h-48 w-full object-contain p-2' src={pictures[0]} alt={title} />
+                    <div className='p-4 flex-grow'>
+                      <h3 className='font-bold text-lg text-gray-800 mb-2'>{title}</h3>
+                      <p className='text-gray-500 text-sm'>{description}</p>
+                      <span className='block mt-2 font-semibold text-xl text-black'>{unit_price}</span>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
+        </section>
+        
       </>
     );
   }
