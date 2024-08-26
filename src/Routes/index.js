@@ -3,4 +3,5 @@ import { SignUp } from './Sign-Up/Sign-up'
 import { Home } from './Home/Home'
 import { HomePage } from './HomePage/HomePage'
 import { NotFound } from './NotFound/NotFound'
-export{SignIn, SignUp, Home, HomePage, NotFound}
+import { ProductDetail } from './Product/Product'
+export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail}

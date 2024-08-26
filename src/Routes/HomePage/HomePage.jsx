@@ -54,6 +54,10 @@ export function HomePage(){
       }
     };
 
+    const handleProductClick = (productId) => {
+      navigate(`/product/${productId}`);
+    };
+
     if (!isAuthenticated || isLoading) {
       return <Loader/>
     }
@@ -64,9 +68,9 @@ export function HomePage(){
           <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl text-center mb-6'>Explore Our Products</h1>
           <div>
             <ul className='flex flex-wrap justify-center'>
-              {products.map(({ title, pictures, description, unit_price }) => (
+              {products.map(({ id, title, pictures, description, unit_price }) => (
                 <li key={title} className='m-4 w-64'>
-                  <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col cursor-pointer" onClick={() => handleProductClick(id)}>
                     <img className='h-48 w-full object-contain p-2' src={pictures[0]} alt={title} />
                     <div className='p-4 flex-grow'>
                       <h3 className='font-bold text-lg text-gray-800 mb-2'>{title}</h3>
