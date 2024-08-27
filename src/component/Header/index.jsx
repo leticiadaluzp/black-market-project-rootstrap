@@ -52,8 +52,8 @@ export function Header() {
 
   const guestLinks = (
     <ul className='flex md:pr-0.25 md:gap-2 box-border'>
-      <ItemMenu text='Sign In' path='SignIn' />
-      <ItemMenu text='Sign Up' path='SignUp' />
+      <ItemMenu text='Sign In' path='sign-in' />
+      <ItemMenu text='Sign Up' path='sign-up' />
     </ul>
   );
 

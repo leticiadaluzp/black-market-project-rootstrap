@@ -42,7 +42,7 @@ export function ProductDetail() {
     if (isLoggedIn) {
       fetchProduct();
     } else {
-      navigate("/SignIn")
+      navigate("/sign-in")
     }
   }, [id, isLoggedIn]);
 
