@@ -91,7 +91,7 @@ export function Home(){
                   <div className='flex md:gap-14 transition ease-out duration-400 mx-2 md:mx-0 md:ml-20 ' style={{transform: `translateX(-${current * translateValue}%)`}}>
                   {products.map(({title, pictures, unit_price}) =>(
                     <div key={title} className='rounded-xl bg-neutral-700 flex flex-col px-4 md:px-20 py-8 flex-wrap mx-4  md:mx-0'>
-                      <img src={pictures} className='h-[180px] md:h-[400px] max-w-[200px] w-[200px] md:w-auto  md:max-w-[300px]' />
+                      <img src={pictures} className='h-[180px] md:h-[400px] max-w-[200px] w-[200px] md:w-auto  md:max-w-[300px] object-contain' />
                       <h2 className='text-xl  md:text-2xl'>{title}</h2>
                       <p className='text-xl md:text-2xl'>{unit_price}</p>
                     </div>
