@@ -101,30 +101,32 @@ export function HomePage(){
               <h1 className='font-bold px-3 md:px-0 text-2xl md:text-5xl text-center tracking-wide'>
                 Powering your tech dreams, one gadget at a time
               </h1>
-              <img src={glassesGirl} alt='futa persona character' className='md:w-[56%] border-double border-8 border-red-700 rounded-md' />
+              <img src={glassesGirl} alt='futaba persona character' className='md:w-[56%] border-double border-8 border-red-700 rounded-md' />
             </div>
             <h2 className='text-2xl mt-8 md:mt-10 md:text-4xl text-center mb-6'>Explore Our Products</h2>
             <div className='mt-12'>
               <div className='w-[90%] md:w-[60%] m-auto pb-11'>
                 <div className='overflow-hidden relative'>
-                  <div className='flex md:gap-14 transition ease-out duration-400 mx-2 md:mx-0 md:ml-20 ' style={{transform: `translateX(-${current * translateValue}%)`}}>
-                  {products.map(({id,title, pictures, unit_price}) =>(
-                    <div key={title} className='rounded-xl bg-neutral-700 flex flex-col px-4 md:px-20 py-8 flex-wrap mx-4  md:mx-0' onClick={() => handleProductClick(id)}>
-                      <img src={pictures} alt={title} className='h-[180px] md:h-[400px] max-w-[200px] w-[200px] md:w-auto  md:max-w-[300px] object-contain' />
+                  <div className='absolute top-1/2 left-0 flex justify-between items-center text-3xl text-red-700 px-1 md:px-10 z-10 cursor-pointer'>
+                  <button onClick={previousSlide} >
+                    <FaArrowCircleLeft />
+                  </button>
+                </div>
+                  <div className='flex md:gap-14 transition ease-out duration-400 mx-2 md:mx-0 md:ml-20 ' style={{transform: `translateX(-${current * translateValue}%)`}} >
+                  {products.map(({id, title, pictures, unit_price}) =>(
+                    <div key={title} className='rounded-xl bg-neutral-700 flex flex-col px-4 md:px-20 py-8 flex-wrap mx-4  md:mx-0 cursor-pointer' onClick={() => handleProductClick(id)}>
+                      <img src={pictures[0]} alt={title} className='h-[180px] md:h-[400px] max-w-[200px] w-[200px] md:w-auto  md:max-w-[300px] object-contain ' />
                       <h2 className='text-xl  md:text-2xl'>{title}</h2>
                       <p className='text-xl md:text-2xl'>{unit_price}</p>
                     </div>
                   ))}
                 </div>
-                <div className='absolute top-0 h-full w-full flex justify-between items-center text-3xl text-red-700 px-1 md:px-10'>
-                  <button onClick={previousSlide}>
-                    <FaArrowCircleLeft />
-                  </button>
+                <div className='absolute top-1/2 right-0 flex justify-between items-center text-3xl text-red-700 px-1 md:px-10 z-10 cursor-pointer'>
                   <button onClick={nextSlide}>
                     <FaArrowCircleRight />
                   </button>
                 </div>
-                <div className='absolute bottom-0 py- flex justify-center gap-5 w-full'>
+                <div className='absolute bottom-0 flex justify-center gap-5 w-full'>
                   {Array.from({length: products.length -slidesNumber}).map((_,i)=>{
                     return (<div key={i} onClick={()=>setCurrent(i)}  className={`rounded-full w-5 h-5 cursor-pointer ${i===current? 'bg-red-700' : 'bg-slate-600' }`}></div>)
                   })}
@@ -137,5 +139,3 @@ export function HomePage(){
       </>
     );
   }
-
-
