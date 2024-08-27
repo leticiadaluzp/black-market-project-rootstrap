@@ -51,9 +51,40 @@ export function ProductDetail() {
     toast.success(`${product.title} was added to the cart`);
   };
 
-  const handleAddToFavorites = () => {
-    // TO DO: Add logic to add the product to favorites
-    setIsFavorite(!isFavorite);
+  const handleAddToFavorites = async (event) => {
+    if (isFavorite){
+      try {
+        setIsLoading(true);
+        const response = await axiosInstance.delete(`/products/${id}/favorite`, {
+          headers: {
+            'access-token': localStorage.getItem('access-token'),
+            'uid': localStorage.getItem('uid'),
+            'client': localStorage.getItem('client'),
+          },
+        })
+        setIsFavorite(!isFavorite);
+      } catch (error) {
+        //TO DO
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      try {
+        setIsLoading(true);
+        const response = await axiosInstance.post(`/products/${id}/favorite`, {
+          headers: {
+            'access-token': localStorage.getItem('access-token'),
+            'uid': localStorage.getItem('uid'),
+            'client': localStorage.getItem('client'),
+          },
+        })
+        setIsFavorite(!isFavorite);
+      } catch (error) {
+        //TO DO
+      } finally {
+        setIsLoading(false);
+      }
+    }
     toast.info(`${product.title} ${isFavorite ? 'removed from' : 'added to'} favorites`);
   };
 
