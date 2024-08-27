@@ -10,7 +10,7 @@ import { Loader } from "../../component";
 export function ProductDetail() {
   const { id } = useParams();
   const { isLoggedIn } = useContext(UserSessionContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false); 

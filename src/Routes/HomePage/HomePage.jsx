@@ -10,19 +10,18 @@ export function HomePage(){
     const navigate = useNavigate();
   
     useEffect(() => {
+      handleAuthentication();
+    }, []);
+
+    const handleAuthentication = () => {
       setIsLoading(true);
-      const authStatus = handleAuthentication();
+      const authStatus = checkAuth();
+      setIsAuthenticated(authStatus);
       if (!authStatus) {
         navigate('/SignIn');
       } else {
         fetchProducts();
       }
-    }, []);
-
-    const handleAuthentication = () => {
-      const authStatus = checkAuth();
-      setIsAuthenticated(authStatus);
-      return authStatus;
     };
   
     const checkAuth = () => {
