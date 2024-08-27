@@ -1,128 +1,18 @@
-import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
-import React, { useState, useEffect } from 'react'
-import {axiosInstance} from '../../component/axios/axios'
+import React from 'react'
 import creepyClerk from '../../assets/Igor_Persona5.gif'
-import glassesGirl from '../../assets/futaba-persona-5.gif'
+
 
 export function Home(){
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [current, setCurrent]= useState(0)
-  const [translateValue, setTranslateValue] = useState(85)
-  const [slidesNumber, setSlidesNumber]=useState(0)
-
-  useEffect(() => {
-    const authStatus = checkAuth();
-    setIsAuthenticated(authStatus);
-    if (authStatus) {
-      fetchProducts();
-    }
-  }, []);
-
-  useEffect(() => {
-  const updateTranslateValue = () => {
-    if (window.innerWidth < 768) {
-      setTranslateValue(96)
-      setSlidesNumber(0)
-    } else if (window.innerWidth < 1024) {
-      setTranslateValue(90)
-      setSlidesNumber(3)
-    } else {
-      setTranslateValue(95)
-      setSlidesNumber(3)
-    }
-  };
-  updateTranslateValue();
-  window.addEventListener('resize', updateTranslateValue);
-
-  // Cleanup para remover el listener cuando el componente se desmonte
-  return () => window.removeEventListener('resize', updateTranslateValue);
-}, []);
-
-  const checkAuth = () => {
-    const storedAccessToken = localStorage.getItem('accessToken');
-    const storedUid = localStorage.getItem('uid');
-    const storedClient = localStorage.getItem('client');
-
-    if (storedAccessToken && storedUid && storedClient) {
-      return true;
-    }
-    return false;
-  }
-
-  const fetchProducts = async () => {
-    try {
-      const response = await axiosInstance.get('/products', {
-        headers: {
-          'access-token': localStorage.getItem('access-token'),
-          'uid': localStorage.getItem('uid'),
-          'client': localStorage.getItem('client'),
-        },
-      });
-      setProducts(response.data.data);
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-      //TO DO: ver como manejamos este error
-    }
-  }
-
-  const previousSlide= () =>{
-    current ===0 ? setCurrent(products.length -slidesNumber -1) : setCurrent(current-1)
-  }
-
-   const nextSlide= () =>{
-    current ===(products.length - slidesNumber -1) ? setCurrent(0) : setCurrent(current +1)
-  }
 
   return(
     <>
-      {isAuthenticated ? (
-         <section className='mt-20' >
-            <div className='flex items-center flex-col gap-4'>
-              <h1 className='font-bold px-3 md:px-0 text-2xl md:text-5xl text-center tracking-wide'>
-                Powering your tech dreams, one gadget at a time
-              </h1>
-              <img src={glassesGirl} alt='futa persona character' className='md:w-[56%] border-double border-8 border-red-700 rounded-md' />
-            </div>
-            <h2 className='text-2xl mt-8 md:mt-10 md:text-4xl text-center mb-6'>Explore Our Products</h2>
-            <div className='mt-12'>
-              <div className='w-[90%] md:w-[60%] m-auto pb-11'>
-                <div className='overflow-hidden relative'>
-                  <div className='flex md:gap-14 transition ease-out duration-400 mx-2 md:mx-0 md:ml-20 ' style={{transform: `translateX(-${current * translateValue}%)`}}>
-                  {products.map(({title, pictures, unit_price}) =>(
-                    <div key={title} className='rounded-xl bg-neutral-700 flex flex-col px-4 md:px-20 py-8 flex-wrap mx-4  md:mx-0'>
-                      <img src={pictures} className='h-[180px] md:h-[400px] max-w-[200px] w-[200px] md:w-auto  md:max-w-[300px] object-contain' />
-                      <h2 className='text-xl  md:text-2xl'>{title}</h2>
-                      <p className='text-xl md:text-2xl'>{unit_price}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className='absolute top-0 h-full w-full flex justify-between items-center text-3xl text-red-700 px-1 md:px-10'>
-                  <button onClick={previousSlide}>
-                    <FaArrowCircleLeft />
-                  </button>
-                  <button onClick={nextSlide}>
-                    <FaArrowCircleRight />
-                  </button>
-                </div>
-                <div className='absolute bottom-0 py- flex justify-center gap-5 w-full'>
-                  {Array.from({length: products.length -slidesNumber}).map((_,i)=>{
-                    return (<div key={i} onClick={()=>setCurrent(i)}  className={`rounded-full w-5 h-5 cursor-pointer ${i===current? 'bg-red-700' : 'bg-slate-600' }`}></div>)
-                  })}
-                </div>
-                </div>
-              </div>
-            </div>
-          </section>
-      ) : (
-        <div className='flex flex-col items-center mt-8 md:mt-0'>
-          <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl'>Welcome to...</h1>
-          <div className='w-full h-full flex items-center relative text-center overflow-hidden'>
-            <h2 className='relative text-[4rem] font-bold m-auto leading-normal tracking-wider z-10 text-glitch text-glitch-duration-fast md:text-[4.4rem]'>Black Market</h2>
-          </div>
-          <img src={creepyClerk} alt='Igor persona character' className='w-11/12 mt-10 md:w-1/2 md:mt-8' />
+      <div className='flex flex-col items-center mt-8 md:mt-0'>
+        <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl'>Welcome to...</h1>
+        <div className='w-full h-full flex items-center relative text-center overflow-hidden'>
+          <h2 className='relative text-[4rem] font-bold m-auto leading-normal tracking-wider z-10 text-glitch text-glitch-duration-fast md:text-[4.4rem]'>Black Market</h2>
         </div>
-      )}
+        <img src={creepyClerk} alt="Igor persona character" className='w-11/12 mt-10 md:w-1/2 md:mt-8' />
+      </div>
     </>
   );
 }

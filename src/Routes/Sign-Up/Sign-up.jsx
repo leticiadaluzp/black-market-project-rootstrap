@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Input, Loader } from "../../component";
 import { axiosInstance } from "../../component/axios/axios";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
+import { UserSessionContext } from "../../component/context/UserSessionProvider";
 
 export function SignUp(){
   const [email, setEmail] = useState("");
@@ -12,6 +15,8 @@ export function SignUp(){
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [generalError, setGeneralError] = useState([]); 
+
+  const { handleLogin } = useContext(UserSessionContext)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,13 +32,33 @@ export function SignUp(){
           password_confirmation: confirmPassword
         }
       });;
-      //TO DO: mostrar mensaje de registro exitoso y luego esperar x segundos para dirigir al sign in
-      navigate("/SignIn");
+
+      toast.success("User registered successfully!", {
+        autoClose: 1500, 
+      });
+      
+      const responseSignIn = await axiosInstance.post("/users/sign_in", {
+        user: {
+          email,
+          password,
+        }
+      });
+      const accessToken = responseSignIn.headers['access-token'];
+      const uid = responseSignIn.headers['uid'];
+      const client = responseSignIn.headers['client'];
+      
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('uid', uid);
+      localStorage.setItem('client', client);
+
+      handleLogin();
+      // We should navigate to the HomePage or to the sign in?
+      navigate("/HomePage");
     } catch (error){
         if (error.response && error.response.status === 422) {
-            setGeneralError(error.response.data.errors.full_messages);
+          setGeneralError(error.response.data.errors.full_messages || []);
         } else {
-            setGeneralError("An unexpected error occurred.");
+          toast.error('Failed to sign up. Please try again.');
         }
     } finally {
         setIsLoading(false);
@@ -60,7 +85,7 @@ export function SignUp(){
           <span className=''>Accept terms and conditions</span>
         </div>
         
-        {generalError.length > 0 && generalError.map((error, index) => (
+        {Array.isArray(generalError) && generalError.length > 0 && generalError.map((error, index) => (
           <p key={index} className="text-red-500 flex items-center w-11/12 m-auto md:pl-20">• {error}</p>
         ))}
         

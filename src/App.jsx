@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-
 import { Header, Loader } from './component'
 
 function App() {
