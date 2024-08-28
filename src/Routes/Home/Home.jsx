@@ -1,6 +1,9 @@
+import React from 'react'
 import creepyClerk from '../../assets/Igor_Persona5.gif'
 
+
 export function Home(){
+
   return(
     <>
       <div className='flex flex-col items-center mt-8 md:mt-0'>
