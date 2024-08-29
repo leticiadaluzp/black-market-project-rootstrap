@@ -4,4 +4,5 @@ import { Home } from './Home/Home'
 import { HomePage } from './HomePage/HomePage'
 import { NotFound } from './NotFound/NotFound'
 import { ProductDetail } from './Product/Product'
-export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail}
+import { ShoppingCart } from './Shopping-Cart/ShoppingCart'
+export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail, ShoppingCart}

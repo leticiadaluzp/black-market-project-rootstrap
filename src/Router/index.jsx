@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App';
 import ProtectedRoute from '../component/ProtectedRoute/ProtectedRoute';
-import {Home, HomePage, SignIn, SignUp, NotFound, ProductDetail} from '../Routes'
+import {Home, HomePage, SignIn, SignUp, NotFound, ProductDetail, ShoppingCart} from '../Routes'
 
 export const router = createBrowserRouter([
   {
@@ -30,9 +30,17 @@ export const router = createBrowserRouter([
         )
       },
       {
-        path: 'product/:id', 
-        element: <ProductDetail />, 
-      }
+        path: 'product/:id',
+        element: <ProductDetail />,
+      },
+      {
+        path: 'ShoppingCart',
+        element: (
+          <ProtectedRoute>
+            <ShoppingCart/>
+          </ProtectedRoute>
+        )
+      },
     ]
   }
 ])
