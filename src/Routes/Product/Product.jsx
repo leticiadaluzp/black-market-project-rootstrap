@@ -46,9 +46,47 @@ export function ProductDetail() {
     }
   }, [id, isLoggedIn]);
 
-  const handleAddToCart = () => {
-    // TO DO: Add logic to add the product to the cart
-    toast.success(`${product.title} was added to the cart`);
+  const handleAddToCart = async (event) => {
+    if (product.stock < quantity) {
+      toast.error('Insufficient stock available.');
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const response = await axiosInstance.post(`/shopping_cart/line_items`, {
+        line_item: {
+          quantity,
+          product_id: id,
+        },
+      },
+      {
+        headers: {
+          'access-token': localStorage.getItem('access-token'),
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client'),
+        },
+      });
+      toast.success(`${product.title} was added to the cart`);
+    } catch (error) {
+      if (error.response) {
+        const { status, data: { errors = [] } = {} } = error.response;
+        switch (status) {
+          case 422:
+            toast.error(errors[0] || 'Unprocessable content.');
+            break;
+          case 401:
+            toast.error("You need to sign in or sign up before continuing.");
+            break;
+          default:
+            toast.error('Something went wrong. Please try again.');
+            break;
+        }
+      } else {
+        toast.error('Network error. Please check your connection.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleAddToFavorites = async (event) => {
@@ -64,7 +102,7 @@ export function ProductDetail() {
         })
         setIsFavorite(!isFavorite);
       } catch (error) {
-        //TO DO
+        toast.error("Something went wrong.")
       } finally {
         setIsLoading(false);
       }
@@ -80,7 +118,7 @@ export function ProductDetail() {
         })
         setIsFavorite(!isFavorite);
       } catch (error) {
-        //TO DO
+        toast.error("Something went wrong.")
       } finally {
         setIsLoading(false);
       }
