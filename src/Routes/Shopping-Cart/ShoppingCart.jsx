@@ -85,8 +85,10 @@ export function ShoppingCart(){
 
   const handleSortByPriceDescAndAZ = () => {
   const sortedProducts = [...product].sort((a, b) => {
-    if (b.price !== a.price) {
-      return b.price - a.price;
+    const numericPriceA = parseFloat(a.price.replace('$', ''))
+    const numericPriceB = parseFloat(b.price.replace('$', ''))
+    if (numericPriceB !== numericPriceA) {
+      return numericPriceB - numericPriceA;
     }
     return a.name.localeCompare(b.name);
   });
@@ -95,8 +97,10 @@ export function ShoppingCart(){
 
 const handleSortByPriceAscAndAZ = () => {
   const sortedProducts = [...product].sort((a, b) => {
-    if (a.price !== b.price) {
-      return a.price - b.price;
+    const numericPriceA = parseFloat(a.price.replace('$', ''))
+    const numericPriceB = parseFloat(b.price.replace('$', ''))
+    if (numericPriceA !== numericPriceB) {
+      return numericPriceA - numericPriceB;
     }
     return a.name.localeCompare(b.name);
   });
