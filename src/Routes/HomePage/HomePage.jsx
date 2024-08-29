@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
-import {axiosInstance} from "../../component/axios/axios";
-import { Loader } from "../../component"
+import {axiosInstance} from '../../component/axios/axios'
+import { Loader } from '../../component'
 import glassesGirl from '../../assets/futaba-persona-5.gif'
 
 export function HomePage(){
@@ -27,7 +27,7 @@ export function HomePage(){
       setTranslateValue(90)
       setSlidesNumber(3)
     } else {
-      setTranslateValue(95)
+      setTranslateValue(96)
       setSlidesNumber(3)
     }
   };
@@ -62,7 +62,7 @@ export function HomePage(){
 
     const fetchProducts = async () => {
       try {
-        const response = await axiosInstance.get("/products", {
+        const response = await axiosInstance.get('/products', {
           headers: {
             'access-token': localStorage.getItem('access-token'),
             'uid': localStorage.getItem('uid'),
@@ -71,7 +71,7 @@ export function HomePage(){
         });
         setProducts(response.data.data);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error('Failed to fetch products:', error);
         //TO DO: how should we handle this error?
       } finally {
         setIsLoading(false);
@@ -107,21 +107,22 @@ export function HomePage(){
             <div className='mt-12'>
               <div className='w-[90%] md:w-[60%] m-auto pb-11'>
                 <div className='overflow-hidden relative'>
-                  <div className='absolute top-1/2 left-0 flex justify-between items-center text-3xl text-red-700 px-1 md:px-10 z-10 cursor-pointer'>
+                  <div className='absolute top-1/2  -left-1 md:left-0 flex justify-between items-center text-3xl text-red-700 px-1 md:px-10 z-10 cursor-pointer'>
                   <button onClick={previousSlide} >
                     <FaArrowCircleLeft />
                   </button>
                 </div>
                   <div className='flex md:gap-14 transition ease-out duration-400 mx-2 md:mx-0 md:ml-20 ' style={{transform: `translateX(-${current * translateValue}%)`}} >
-                  {products.map(({id, title, pictures, unit_price}) =>(
+                  {products.map(({id, title, pictures, description, unit_price}) =>(
                     <div key={title} className='rounded-xl bg-neutral-700 flex flex-col px-4 md:px-20 py-8 flex-wrap mx-4  md:mx-0 cursor-pointer' onClick={() => handleProductClick(id)}>
-                      <img src={pictures[0]} alt={title} className='h-[180px] md:h-[400px] max-w-[200px] w-[200px] md:w-auto  md:max-w-[300px] object-contain ' />
-                      <h2 className='text-xl  md:text-2xl'>{title}</h2>
+                      <img src={pictures[0]} alt={title} className='h-[180px] md:h-[240px] max-w-[200px] w-[200px] md:w-[300px]  md:max-w-[300px] object-cover rounded' />
+                      <h2 className='text-lg mt-1  md:text-2xl'>{title}</h2>
+                      <p className='text-sm my-1 line-clamp-2 md:line-clamp-none'>{description}</p>
                       <p className='text-xl md:text-2xl'>{unit_price}</p>
                     </div>
                   ))}
                 </div>
-                <div className='absolute top-1/2 right-0 flex justify-between items-center text-3xl text-red-700 px-1 md:px-10 z-10 cursor-pointer'>
+                <div className='absolute top-1/2 -right-1 md:right-0 flex justify-between items-center text-3xl text-red-700 px-1 md:px-10 z-10 cursor-pointer'>
                   <button onClick={nextSlide}>
                     <FaArrowCircleRight />
                   </button>
