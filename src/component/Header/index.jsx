@@ -30,7 +30,7 @@ export function Header() {
       if (response.data.success) {
         removeAuth();
         toast.success('Successfully signed out.', {
-          autoClose: 1500, 
+          autoClose: 1500,
         });
       } else {
         toast.error('Failed to sign out. Please try again.');
@@ -46,6 +46,7 @@ export function Header() {
 
   const authLinks = (
     <ul className='flex md:pr-0.25 md:gap-2 box-border'>
+      <ItemMenu text='Shopping cart' path='ShoppingCart' />
       <ItemMenu text='Sign Out' path='/' onClick={logOut} />
     </ul>
   );
