@@ -54,11 +54,14 @@ export function ShoppingCart(){
             'client': localStorage.getItem('client'),
           },
         });
-        //setProduct(response.data)
+        if (response){
+            //setProduct(response.data)
+        }else{
+          throw new Error ('Oops, an error occured. Sorry about the inconvenience, please try refreshing and contact us if the problem persists')
+        }
         console.log(response.data)
       } catch (error) {
         console.error('Failed to fetch products:', error)
-        //TO DO: how should we handle this error?
       } finally {
         setIsLoading(false)
       }
@@ -139,10 +142,10 @@ const totalPurchasePrice = calculateTotalPrice()
    < SearchInput onSearch={handleSearch} />
    <div className='flex gap-5 mt-4 items-center justify-center flex-wrap px-3'>
     <h2 className='w-full text-center text-base md:text-xl'>Sort by:</h2>
-    < SortButton text='Higher price' onClick={handleSortByPriceDescAndAZ} />
-    < SortButton text='Lower price' onClick={handleSortByPriceAscAndAZ}  />
-    < SortButton text='A-Z' onClick={handleSortAZ} />
-    < SortButton text='Z-A' onClick={handleSortZA}  />
+    <SortButton text='Higher price' onClick={handleSortByPriceDescAndAZ} />
+    <SortButton text='Lower price' onClick={handleSortByPriceAscAndAZ}  />
+    <SortButton text='A-Z' onClick={handleSortAZ} />
+    <SortButton text='Z-A' onClick={handleSortZA}  />
    </div>
    <ul className='flex flex-col items-center mt-4 w-5/6'>
     {product.map(({name, quantity, price, picture}, index) => (

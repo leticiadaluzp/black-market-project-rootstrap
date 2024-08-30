@@ -5,15 +5,16 @@ import { Link } from "react-router-dom"
 export function ItemMenu({text, path, onClick, icon, permit}){
     const styles='text-2xl'
     const renderIcon = () => {
-      if (icon === 'home') {
-        return <FaHome className={styles} />
-      }else if (icon === 'cart'){
-        return <TiShoppingCart className={styles} />
-      }else if (icon === 'logOut'){
-        return <FaSignOutAlt className={styles} />
-      }else{
-        return null
-    }
+      switch(icon){
+        case 'home':
+          return <FaHome className={styles} />
+        case 'cart':
+          return <TiShoppingCart className={styles} />
+        case 'logOut':
+          return <FaSignOutAlt className={styles} />
+        default:
+          return null
+      }
   };
 
   return (
