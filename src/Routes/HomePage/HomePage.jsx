@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
-import {axiosInstance} from "../../component/axios/axios";
+import { axiosInstance } from "../../component/axios/axios";
 import glassesGirl from '../../assets/futaba-persona-5.gif'
 import { Loader } from "../../component";
 import { UserSessionContext } from '../../component/context/UserSessionProvider';

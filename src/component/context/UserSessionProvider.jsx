@@ -3,13 +3,10 @@ import { createContext, useState, useEffect } from "react";
 export const UserSessionContext = createContext();
 
 export const UserSessionProvider = ({children}) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    checkAuth() ? handleLogin() : setIsLoggedIn(false)
+    checkAuth() ? setIsLoggedIn(true) : setIsLoggedIn(false)
   }, []);
 
   const checkAuth = () => {
