@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
         element: <ProductDetail />,
       },
       {
-        path: 'ShoppingCart',
+        path: 'shopping-cart',
         element: (
           <ProtectedRoute>
             <ShoppingCart/>
