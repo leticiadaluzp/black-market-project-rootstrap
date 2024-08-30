@@ -14,15 +14,15 @@ export const router = createBrowserRouter([
         element: <Home/>
       },
       {
-        path: 'SignIn',
+        path: 'sign-in',
         element: <SignIn/>
       },
       {
-        path: 'SignUp',
+        path: 'sign-up',
         element: <SignUp/>
       },
       {
-        path: 'HomePage',
+        path: 'homepage',
         element: (
           <ProtectedRoute>
             <HomePage/>
