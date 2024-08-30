@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         element: <SignUp/>
       },
       {
-        path: 'HomePage',
+        path: 'homePage',
         element: (
           <ProtectedRoute>
             <HomePage/>

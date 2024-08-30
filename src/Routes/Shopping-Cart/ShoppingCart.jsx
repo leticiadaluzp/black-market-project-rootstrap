@@ -55,6 +55,7 @@ export function ShoppingCart(){
           },
         });
         //setProduct(response.data)
+        console.log(response.data)
       } catch (error) {
         console.error('Failed to fetch products:', error)
         //TO DO: how should we handle this error?
