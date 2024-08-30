@@ -13,6 +13,7 @@ export function Header() {
 
   const removeAuth = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('authToken');
     localStorage.removeItem('uid');
     localStorage.removeItem('client');
     setIsLoggedIn(false);
