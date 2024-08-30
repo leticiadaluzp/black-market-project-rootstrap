@@ -42,87 +42,18 @@ export function ProductDetail() {
     if (isLoggedIn) {
       fetchProduct();
     } else {
-      navigate("/sign-in")
+      navigate("/SignIn")
     }
   }, [id, isLoggedIn]);
 
-  const handleAddToCart = async (event) => {
-    if (product.stock < quantity) {
-      toast.error('Insufficient stock available.');
-      return;
-    }
-    try {
-      setIsLoading(true);
-      const response = await axiosInstance.post(`/shopping_cart/line_items`, {
-        line_item: {
-          quantity,
-          product_id: id,
-        },
-      },
-      {
-        headers: {
-          'access-token': localStorage.getItem('access-token'),
-          'uid': localStorage.getItem('uid'),
-          'client': localStorage.getItem('client'),
-        },
-      });
-      toast.success(`${product.title} was added to the cart`);
-    } catch (error) {
-      if (error.response) {
-        const { status, data: { errors = [] } = {} } = error.response;
-        switch (status) {
-          case 422:
-            toast.error(errors[0] || 'Unprocessable content.');
-            break;
-          case 401:
-            toast.error("You need to sign in or sign up before continuing.");
-            break;
-          default:
-            toast.error('Something went wrong. Please try again.');
-            break;
-        }
-      } else {
-        toast.error('Network error. Please check your connection.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const handleAddToCart = () => {
+    // TO DO: Add logic to add the product to the cart
+    toast.success(`${product.title} was added to the cart`);
   };
 
-  const handleAddToFavorites = async (event) => {
-    if (isFavorite){
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.delete(`/products/${id}/favorite`, {
-          headers: {
-            'access-token': localStorage.getItem('access-token'),
-            'uid': localStorage.getItem('uid'),
-            'client': localStorage.getItem('client'),
-          },
-        })
-        setIsFavorite(!isFavorite);
-      } catch (error) {
-        toast.error("Something went wrong.")
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.post(`/products/${id}/favorite`, {
-          headers: {
-            'access-token': localStorage.getItem('access-token'),
-            'uid': localStorage.getItem('uid'),
-            'client': localStorage.getItem('client'),
-          },
-        })
-        setIsFavorite(!isFavorite);
-      } catch (error) {
-        toast.error("Something went wrong.")
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  const handleAddToFavorites = () => {
+    // TO DO: Add logic to add the product to favorites
+    setIsFavorite(!isFavorite);
     toast.info(`${product.title} ${isFavorite ? 'removed from' : 'added to'} favorites`);
   };
 

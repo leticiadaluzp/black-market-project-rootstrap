@@ -53,7 +53,7 @@ export function SignUp(){
 
       handleLogin();
       // We should navigate to the HomePage or to the sign in?
-      navigate("/homepage");
+      navigate("/HomePage");
     } catch (error){
         if (error.response && error.response.status === 422) {
           setGeneralError(error.response.data.errors.full_messages || []);
