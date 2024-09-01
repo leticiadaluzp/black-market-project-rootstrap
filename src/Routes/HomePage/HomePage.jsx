@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
-import {axiosInstance} from '../../component/axios/axios'
+import { axiosInstance } from '../../component/axios/axios';
 import { Loader } from '../../component'
 import glassesGirl from '../../assets/futaba-persona-5.gif'
+import { UserSessionContext } from '../../component/context/UserSessionProvider';
 
 export function HomePage(){
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,6 +15,8 @@ export function HomePage(){
     const [translateValue, setTranslateValue] = useState(85)
     const [slidesNumber, setSlidesNumber]=useState(0)
 
+    const { checkAuth } = useContext(UserSessionContext);
+  
     useEffect(() => {
       handleAuthentication();
     }, []);
@@ -48,17 +51,6 @@ export function HomePage(){
         fetchProducts();
       }
     };
-
-    const checkAuth = () => {
-      const storedAccessToken = localStorage.getItem('accessToken');
-      const storedUid = localStorage.getItem('uid');
-      const storedClient = localStorage.getItem('client');
-
-      if (storedAccessToken && storedUid && storedClient) {
-        return true;
-      }
-      return false;
-    }
 
     const fetchProducts = async () => {
       try {

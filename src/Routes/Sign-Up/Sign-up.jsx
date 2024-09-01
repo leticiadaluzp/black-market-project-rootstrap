@@ -16,7 +16,7 @@ export function SignUp(){
   const navigate = useNavigate();
   const [generalError, setGeneralError] = useState([]); 
 
-  const { handleLogin } = useContext(UserSessionContext)
+  const { setIsLoggedIn } = useContext(UserSessionContext)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,7 +51,7 @@ export function SignUp(){
       localStorage.setItem('uid', uid);
       localStorage.setItem('client', client);
 
-      handleLogin();
+      setIsLoggedIn(true);
       // We should navigate to the HomePage or to the sign in?
       navigate("/HomePage");
     } catch (error){
