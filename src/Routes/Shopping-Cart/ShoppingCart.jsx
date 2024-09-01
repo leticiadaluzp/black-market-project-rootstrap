@@ -62,47 +62,49 @@ export function ShoppingCart(){
 
   const handleSearch = (query) => {
     const searchTerms = query.split(',').map(term => term.trim().toLowerCase())
-    if(query.length > 0){
-       const searchedProduct = [...products].filter((item) => searchTerms.some(term => item.name.toLowerCase().includes(term)))
-       setProducts(searchedProduct)
-    }else {
-      // TO DO
+    if (query.length > 0) {
+      const searchedProducts = products.filter((item) => 
+        searchTerms.some(term => item.product.title.toLowerCase().includes(term))
+      );
+      setProducts(searchedProducts);
+    } else {
+      fetchProducts();
     }
-  }
+  };
 
   const handleSortAZ = () => {
-    const sortedProducts = [...products].sort((a, b) => a.name.localeCompare(b.name));
+    const sortedProducts = [...products].sort((a, b) => a.product.title.localeCompare(b.product.title));
     setProducts(sortedProducts)
   }
 
-    const handleSortZA = () => {
-    const sortedProducts = [...products].sort((a, b) => b.name.localeCompare(a.name));
+  const handleSortZA = () => {
+    const sortedProducts = [...products].sort((a, b) => b.product.title.localeCompare(a.product.title));
     setProducts(sortedProducts)
   }
 
   const handleSortByPriceDescAndAZ = () => {
-  const sortedProducts = [...products].sort((a, b) => {
-    const numericPriceA = parseFloat(a.price.replace('$', ''))
-    const numericPriceB = parseFloat(b.price.replace('$', ''))
+    const sortedProducts = [...products].sort((a, b) => {
+    const numericPriceA = parseFloat(a.product.unit_price.replace('$', ''));
+    const numericPriceB = parseFloat(b.product.unit_price.replace('$', ''));
     if (numericPriceB !== numericPriceA) {
       return numericPriceB - numericPriceA;
     }
-    return a.name.localeCompare(b.name);
-  });
-  setProducts(sortedProducts)
-}
+    return a.product.title.localeCompare(b.product.title);
+    });
+    setProducts(sortedProducts)
+  }
 
-const handleSortByPriceAscAndAZ = () => {
-  const sortedProducts = [...products].sort((a, b) => {
-    const numericPriceA = parseFloat(a.price.replace('$', ''))
-    const numericPriceB = parseFloat(b.price.replace('$', ''))
-    if (numericPriceA !== numericPriceB) {
-      return numericPriceA - numericPriceB;
-    }
-    return a.name.localeCompare(b.name);
-  });
-  setProducts(sortedProducts);
-}
+  const handleSortByPriceAscAndAZ = () => {
+    const sortedProducts = [...products].sort((a, b) => {
+      const numericPriceA = parseFloat(a.product.unit_price.replace('$', ''));
+      const numericPriceB = parseFloat(b.product.unit_price.replace('$', ''));
+      if (numericPriceA !== numericPriceB) {
+        return numericPriceA - numericPriceB;
+      }
+      return a.product.title.localeCompare(b.product.title);
+    });
+    setProducts(sortedProducts);
+  }
 
  const incrementQuantity = (index) => {
     const updatedProducts = [...products];
@@ -118,24 +120,19 @@ const handleSortByPriceAscAndAZ = () => {
     setProducts(updatedProducts);
   };
 
-const calculateTotalPrice = () => {
-  const totalPrice = products.reduce((accumulator, product) => {
-    // Verificar si product.price es una cadena y contiene un precio válido
-    if (typeof product.price === 'string' && product.price.includes('$')) {
-      const numericPrice = parseFloat(product.price.replace('$', ''));
-      // Verificar si el valor parseado es un número válido
+  const calculateTotalPrice = () => {
+    const totalPrice = products.reduce((accumulator, product) => {
+      const numericPrice = parseFloat(product.product.unit_price.replace('$', ''));
       if (!isNaN(numericPrice)) {
         return accumulator + numericPrice * product.quantity;
       }
-    }
-    // Si product.price no es válido, no sumar nada
-    return accumulator;
-  }, 0);
-
-  return totalPrice;
-}
-
-const totalPurchasePrice = calculateTotalPrice()
+      return accumulator;
+    }, 0);
+  
+    return totalPrice;
+  }
+  
+  const totalPurchasePrice = calculateTotalPrice()
 
 
   if (isLoading || !products) return <Loader />
