@@ -169,7 +169,7 @@ export function ShoppingCart(){
         );
       })}
    </ul>
-   <h3 className='mt-4 self-start ml-6 mb-8 md:ml-44'>Total price: ${totalPurchasePrice} </h3>
+   <h3 className='mt-8 text-center text-xl mb-8 p-3 border border-gray-300 shadow-md rounded-md'>Total price: ${totalPurchasePrice} </h3>
   </section>
  )
 }
