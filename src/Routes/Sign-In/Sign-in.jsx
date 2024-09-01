@@ -37,7 +37,7 @@ export function SignIn (){
       toast.success("User login successful!", {
         autoClose: 1500, 
       });
-      navigate("/homepage");
+      navigate("/HomePage");
     } catch (error){
         if (error.response && error.response.status === 401) {
           setError(error.response.data.error);

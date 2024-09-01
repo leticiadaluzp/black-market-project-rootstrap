@@ -1,5 +1,3 @@
-//*TODO: falta acoplarlo al sistema
-
 import axios from "axios";
 
 export const AUTH_TOKEN = "authToken";
