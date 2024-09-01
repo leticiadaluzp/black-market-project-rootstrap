@@ -3,19 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { UserSessionContext } from '../../component/context/UserSessionProvider'
 import {SearchInput, Loader, SortButton, ShoppingItem} from '../../component'
 import {axiosInstance} from '../../component/axios/axios'
-import box from '../../assets/Caja-Sorpresa.png' //testing
 
 export function ShoppingCart(){
-   const testingArray=[
-   { name: 'caja', quantity:1 , price:'$30' , picture:box},
-   { name: 'box', quantity:1 , price:'$20' , picture:box},
-   { name: 'regalo', quantity:1 , price:'$40' , picture:box},
-   { name: 'gift', quantity:1 , price:'$30' , picture:box}
-  ]
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const { isLoggedIn } = useContext(UserSessionContext)
   const [isLoading, setIsLoading] = useState(true)
-  const [product, setProduct] = useState([...testingArray])
+ const [products, setProducts] = useState([]);
   const navigate = useNavigate()
 
  useEffect(() => {
@@ -28,7 +21,7 @@ export function ShoppingCart(){
       const authStatus = checkAuth()
       setIsAuthenticated(authStatus)
       if (!authStatus) {
-        navigate('/SignIn')
+        navigate('/sign-in')
       } else {
         fetchProducts()
       }
@@ -49,13 +42,13 @@ export function ShoppingCart(){
       try {
         const response = await axiosInstance.get('/shopping_cart', {
           headers: {
-            'access-token': localStorage.getItem('access-token'),
+            'access-token': localStorage.getItem('accessToken'),
             'uid': localStorage.getItem('uid'),
             'client': localStorage.getItem('client'),
           },
         });
-        if (response){
-            //setProduct(response.data)
+        if (response && response.data && response.data.line_items){
+          setProducts(response.data.line_items);
         }else{
           throw new Error ('Oops, an error occured. Sorry about the inconvenience, please try refreshing and contact us if the problem persists')
         }
@@ -70,25 +63,25 @@ export function ShoppingCart(){
   const handleSearch = (query) => {
     const searchTerms = query.split(',').map(term => term.trim().toLowerCase())
     if(query.length > 0){
-       const searchedProduct = [...product].filter((item) => searchTerms.some(term => item.name.toLowerCase().includes(term)))
-       setProduct(searchedProduct)
+       const searchedProduct = [...products].filter((item) => searchTerms.some(term => item.name.toLowerCase().includes(term)))
+       setProducts(searchedProduct)
     }else {
-     setProduct(testingArray);
+      // TO DO
     }
   }
 
   const handleSortAZ = () => {
-    const sortedProducts = [...product].sort((a, b) => a.name.localeCompare(b.name));
-    setProduct(sortedProducts)
+    const sortedProducts = [...products].sort((a, b) => a.name.localeCompare(b.name));
+    setProducts(sortedProducts)
   }
 
     const handleSortZA = () => {
-    const sortedProducts = [...product].sort((a, b) => b.name.localeCompare(a.name));
-    setProduct(sortedProducts)
+    const sortedProducts = [...products].sort((a, b) => b.name.localeCompare(a.name));
+    setProducts(sortedProducts)
   }
 
   const handleSortByPriceDescAndAZ = () => {
-  const sortedProducts = [...product].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     const numericPriceA = parseFloat(a.price.replace('$', ''))
     const numericPriceB = parseFloat(b.price.replace('$', ''))
     if (numericPriceB !== numericPriceA) {
@@ -96,11 +89,11 @@ export function ShoppingCart(){
     }
     return a.name.localeCompare(b.name);
   });
-  setProduct(sortedProducts)
+  setProducts(sortedProducts)
 }
 
 const handleSortByPriceAscAndAZ = () => {
-  const sortedProducts = [...product].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     const numericPriceA = parseFloat(a.price.replace('$', ''))
     const numericPriceB = parseFloat(b.price.replace('$', ''))
     if (numericPriceA !== numericPriceB) {
@@ -108,34 +101,46 @@ const handleSortByPriceAscAndAZ = () => {
     }
     return a.name.localeCompare(b.name);
   });
-  setProduct(sortedProducts);
+  setProducts(sortedProducts);
 }
 
  const incrementQuantity = (index) => {
-    const updatedProducts = [...product];
+    const updatedProducts = [...products];
     updatedProducts[index].quantity += 1;
-    setProduct(updatedProducts);
+    setProducts(updatedProducts);
   };
 
  const decrementQuantity = (index) => {
-    const updatedProducts = [...product];
+    const updatedProducts = [...products];
     if (updatedProducts[index].quantity > 1) {
       updatedProducts[index].quantity -= 1;
     }
-    setProduct(updatedProducts);
+    setProducts(updatedProducts);
   };
 
 const calculateTotalPrice = () => {
-  const totalPrice = product.reduce((accumulator, product) => {
-    const numericPrice = parseFloat(product.price.replace('$', ''))
-    return accumulator + numericPrice * product.quantity;
-  }, 0)
-  return totalPrice
+  const totalPrice = products.reduce((accumulator, product) => {
+    // Verificar si product.price es una cadena y contiene un precio válido
+    if (typeof product.price === 'string' && product.price.includes('$')) {
+      const numericPrice = parseFloat(product.price.replace('$', ''));
+      // Verificar si el valor parseado es un número válido
+      if (!isNaN(numericPrice)) {
+        return accumulator + numericPrice * product.quantity;
+      }
+    }
+    // Si product.price no es válido, no sumar nada
+    return accumulator;
+  }, 0);
+
+  return totalPrice;
 }
 
 const totalPurchasePrice = calculateTotalPrice()
 
-  if (isLoading || !product) return <Loader />
+
+  if (isLoading || !products) return <Loader />
+  //Ajustar estilos y demas
+  if (!products || products.length === 0) return <p>No hay productos en el carrito.</p>;
 
  return(
   <section className='mt-8 m-auto md:max-w-[800px] md:mt-14 md:pb-5 md:rounded-3xl md:border md:border-solid md:border-slate-50 flex flex-col items-center '>
@@ -148,17 +153,24 @@ const totalPurchasePrice = calculateTotalPrice()
     <SortButton text='Z-A' onClick={handleSortZA}  />
    </div>
    <ul className='flex flex-col items-center mt-4 w-5/6'>
-    {product.map(({name, quantity, price, picture}, index) => (
+      {products.map((product, index) => {
+        const productData = product.product || {}; // Acceso a la propiedad `product`
+        const picture = (productData.pictures && productData.pictures.length > 0) 
+          ? productData.pictures[0] 
+          : 'default-image.png';
+
+        return (
           <ShoppingItem
             key={index}
-            quantity={quantity}
-            name={name}
-            price={price}
+            name={productData.title || 'Unnamed product'}
+            quantity={product.quantity || 0}
+            price={productData.unit_price || 'Price not available'}
             picture={picture}
             onIncrement={() => incrementQuantity(index)}
             onDecrement={() => decrementQuantity(index)}
           />
-        ))}
+        );
+      })}
    </ul>
    <h3 className='mt-4 self-start ml-6 mb-8 md:ml-44'>Total price: ${totalPurchasePrice} </h3>
   </section>
