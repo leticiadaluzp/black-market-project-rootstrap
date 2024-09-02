@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from 'react-toastify';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa';
 import { UserSessionContext } from '../../component/context/UserSessionProvider';
 import {axiosInstance} from "../../component/axios/axios";
 import { Loader } from "../../component";
@@ -12,8 +12,13 @@ export function ProductDetail() {
   const { isLoggedIn } = useContext(UserSessionContext);
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState(null);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false); 
+  const [current, setCurrent]= useState(0);
+  const [translateValue, setTranslateValue] = useState(100);
+  const [slidesNumber, setSlidesNumber]=useState(1);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +33,7 @@ export function ProductDetail() {
         });
         setProduct(response.data);
         setIsFavorite(response.data.is_favorite);
+        fetchRecommendedProducts(response.data.category.name);
         setIsLoading(false);
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -46,6 +52,27 @@ export function ProductDetail() {
       navigate("/sign-in")
     }
   }, [id, isLoggedIn]);
+
+  useEffect(() => {
+    const updateTranslateValue = () => {
+      if (window.innerWidth < 768) {
+        setTranslateValue(100);
+        setSlidesNumber(1);
+        setIsMobile(true);
+      } else if (window.innerWidth < 1024) {
+        setTranslateValue(50);
+        setSlidesNumber(2);
+        setIsMobile(false);
+      } else {
+        setTranslateValue(50);
+        setSlidesNumber(2);
+        setIsMobile(false);
+      }
+    };
+    updateTranslateValue();
+    window.addEventListener('resize', updateTranslateValue);
+    return () => window.removeEventListener('resize', updateTranslateValue);
+  }, []);
 
   const handleAddToCart = async (event) => {
     if (product.stock < quantity) {
@@ -138,6 +165,38 @@ export function ProductDetail() {
     setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
+  const fetchRecommendedProducts = async (categoryName) => {
+    try {
+      const response = await axiosInstance.get('/products', {
+        params: {
+          categories: [categoryName]
+        },
+        headers: {
+          'access-token': localStorage.getItem('accessToken'),
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client'),
+        },
+        
+      });
+      const filteredProducts = response.data.data.filter(recommendedProduct => recommendedProduct.id !== parseInt(id));
+      setRecommendedProducts(filteredProducts);
+    } catch (error) {
+      toast.error("Error fetching recommended products.");
+    }
+  };
+
+  const previousSlide = () => {
+    setCurrent((prev) => (prev === 0 ? recommendedProducts.length - slidesNumber : prev - 1));
+  };
+  
+  const nextSlide = () => {
+    setCurrent((prev) => (prev === recommendedProducts.length - slidesNumber ? 0 : prev + 1));
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
+
   if (isLoading || !product) return <Loader />
 
 
@@ -194,6 +253,43 @@ export function ProductDetail() {
           </div>
         </div>
       </div>
+      {Array.isArray(recommendedProducts) && recommendedProducts.length > 0 && (
+        <>
+          <h2 className='text-2xl mt-8 md:mt-10 md:text-4xl text-center mb-6'>Recommended Products</h2>
+          <div className='mt-12'>
+            <div className='flex w-[100%] md:w-[85%] m-auto pb-11'>
+            {recommendedProducts.length > 2 && (
+              <div className='relative flex items-center'>
+                <button className="p-2 rounded-full bg-neutral-700 shadow-md hover:bg-neutral-500" onClick={previousSlide}>
+                  <FaArrowCircleLeft size={28} color='white'/>
+                </button>
+              </div>
+            )}
+              <div className={`overflow-hidden relative w-[100%] md:w-[90%] m-auto`}>
+                <div className={`flex transition-transform duration-500 ease-in-out transform`} style={{ transform: `translateX(-${current * translateValue}%)` }}>
+                  {recommendedProducts.map(({ id, title, pictures, description, unit_price }) => (
+                    <div key={title} className={`rounded-xl ${isMobile ? 'max-w-[95%] min-w-[95%]' : 'max-w-[45%] min-w-[45%]'} bg-neutral-700 flex flex-col px-4 py-8 flex-wrap mr-[5%] cursor-pointer`} onClick={() => handleProductClick(id)}>
+                      <div className="bg-white mb-4 rounded-lg shadow-md overflow-hidden flex justify-center items-center">
+                        <img src={pictures[0]} alt={title} className='h-[200px] md:h-[240px] max-w-[200px] w-[200px] md:w-[300px]  md:max-w-[100%] object-contain p-2'/>
+                      </div>
+                      <h2 className='text-lg mt-1 md:text-2xl'>{title}</h2>
+                      <p className='text-sm my-1 line-clamp-3'>{description}</p>
+                      <p className='text-xl md:text-2xl'>{unit_price}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {recommendedProducts.length > 2 && (
+                <div className='relative flex items-center'>
+                  <button className="p-2 rounded-full bg-neutral-700 shadow-md hover:bg-neutral-500" onClick={nextSlide}>
+                    <FaArrowCircleRight size={28} color='white'/>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }
