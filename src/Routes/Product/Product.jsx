@@ -178,7 +178,7 @@ export function ProductDetail() {
         },
         
       });
-      const filteredProducts = response.data.data.filter(recommendedProduct => recommendedProduct.id !== product.id);
+      const filteredProducts = response.data.data.filter(recommendedProduct => recommendedProduct.id !== parseInt(id));
       setRecommendedProducts(filteredProducts);
     } catch (error) {
       toast.error("Error fetching recommended products.");
@@ -258,11 +258,13 @@ export function ProductDetail() {
           <h2 className='text-2xl mt-8 md:mt-10 md:text-4xl text-center mb-6'>Recommended Products</h2>
           <div className='mt-12'>
             <div className='flex w-[100%] md:w-[85%] m-auto pb-11'>
+            {recommendedProducts.length > 2 && (
               <div className='relative flex items-center'>
                 <button className="p-2 rounded-full bg-neutral-700 shadow-md hover:bg-neutral-500" onClick={previousSlide}>
                   <FaArrowCircleLeft size={28} color='white'/>
                 </button>
               </div>
+            )}
               <div className={`overflow-hidden relative w-[100%] md:w-[90%] m-auto`}>
                 <div className={`flex transition-transform duration-500 ease-in-out transform`} style={{ transform: `translateX(-${current * translateValue}%)` }}>
                   {recommendedProducts.map(({ id, title, pictures, description, unit_price }) => (
@@ -277,11 +279,13 @@ export function ProductDetail() {
                   ))}
                 </div>
               </div>
-              <div className='relative flex items-center'>
-                <button className="p-2 rounded-full bg-neutral-700 shadow-md hover:bg-neutral-500" onClick={nextSlide}>
-                  <FaArrowCircleRight size={28} color='white'/>
-                </button>
-              </div>
+              {recommendedProducts.length > 2 && (
+                <div className='relative flex items-center'>
+                  <button className="p-2 rounded-full bg-neutral-700 shadow-md hover:bg-neutral-500" onClick={nextSlide}>
+                    <FaArrowCircleRight size={28} color='white'/>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </>
