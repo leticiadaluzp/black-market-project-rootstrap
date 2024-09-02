@@ -273,7 +273,7 @@ export function ProductDetail() {
                         <img src={pictures[0]} alt={title} className='h-[200px] md:h-[240px] max-w-[200px] w-[200px] md:w-[300px]  md:max-w-[100%] object-contain p-2'/>
                       </div>
                       <h2 className='text-lg mt-1 md:text-2xl'>{title}</h2>
-                      <p className='text-sm my-1 line-clamp-2 md:line-clamp-none'>{description}</p>
+                      <p className='text-sm my-1 line-clamp-3'>{description}</p>
                       <p className='text-xl md:text-2xl'>{unit_price}</p>
                     </div>
                   ))}
