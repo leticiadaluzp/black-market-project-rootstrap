@@ -19,7 +19,7 @@ export function ItemMenu({text, path, onClick, icon, permit}){
 
   const textClasses = permit === 'auth' 
     ? 'hidden lg:block' 
-    : 'block md:hidden';
+    : 'block md:hidden lg:block';
 
   return (
     <li className='h-full border-none px-1 ease-in-out duration-200 pt-3.5 md:pt-5 text-sm md:text-lg md:px-4 md:hover:bg-red-800'>
