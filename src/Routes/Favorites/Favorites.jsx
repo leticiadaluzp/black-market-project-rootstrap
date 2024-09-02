@@ -96,13 +96,14 @@ export function Favorites(){
 
   return(
     <section className='mt-8 m-auto md:max-w-[800px] md:mt-14 md:pb-5 md:rounded-3xl md:border md:border-solid md:border-slate-50 flex flex-col items-center '>
+      <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl mb-8'>Your favorite products</h1>
       <SearchInput onSearch={handleSearch} />
       <div className='flex gap-5 mt-4 items-center justify-center flex-wrap px-3'>
         <h2 className='w-full text-center text-base md:text-xl'>Sort by:</h2>
-        <SortButton text='Higher price' onClick={handleSortByPriceDescAndAZ} />
-        <SortButton text='Lower price' onClick={handleSortByPriceAscAndAZ}  />
-        <SortButton text='A-Z' onClick={handleSortAZ} />
-        <SortButton text='Z-A' onClick={handleSortZA}  />
+        <SortButton text='Higher price' onClick={handleSortByPriceAscAndAZ}/>
+        <SortButton text='Lower price' onClick={handleSortByPriceDescAndAZ}/>
+        <SortButton text='A-Z' onClick={handleSortAZ}/>
+        <SortButton text='Z-A' onClick={handleSortZA}/>
       </div>
       {products.length === 0 ? (
         <p className='mt-10 p-3 text-center text-2xl text-red-600'>You have no favorite products to show</p>
