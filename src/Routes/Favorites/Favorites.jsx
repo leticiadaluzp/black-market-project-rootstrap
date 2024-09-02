@@ -1,5 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
 import { UserSessionContext } from '../../component/context/UserSessionProvider';
 import {SearchInput, Loader, SortButton, FavoriteItem} from '../../component';
 import {axiosInstance} from '../../component/axios/axios';
@@ -37,10 +39,10 @@ export function Favorites(){
       if (Array.isArray(response.data.data)) {
         setProducts(response.data.data);
       } else {
-        console.error('API response data is not an array:', response.data.data);
+        toast.error("Something went wrong. Pleade try again later.")
       }
     } catch (error) {
-      console.error('Failed to fetch products:', error)
+        toast.error("Something went wrong. Pleade try again later.")
     } finally {
       setIsLoading(false)
     }
@@ -92,6 +94,10 @@ export function Favorites(){
     setProducts(sortedProducts);
   }
 
+  const handleFavoriteToggle = (productId) => {
+    setProducts(prevProducts => prevProducts.filter(product => product.product.id !== productId));
+  };
+
   if (isLoading || !products) return <Loader />
 
   return(
@@ -121,7 +127,9 @@ export function Favorites(){
             name={productData.title || 'Unnamed product'}
             price={productData.unit_price || 'Price not available'}
             picture={picture}
-            onClick={() => handleClick(product.id)}
+            isFavorite={productData.is_favorite}
+            id={productData.id}
+            onFavoriteToggle={handleFavoriteToggle}
             />
           );
           })}

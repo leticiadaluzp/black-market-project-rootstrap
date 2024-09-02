@@ -27,6 +27,7 @@ export function ProductDetail() {
           }
         });
         setProduct(response.data);
+        setIsFavorite(response.data.is_favorite);
         setIsLoading(false);
       } catch (error) {
         if (error.response && error.response.status === 401) {
