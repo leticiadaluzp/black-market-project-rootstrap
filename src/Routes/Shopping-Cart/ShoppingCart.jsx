@@ -1,17 +1,19 @@
-import { useContext, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from 'react-toastify';
-import { UserSessionContext } from '../../component/context/UserSessionProvider'
-import {SearchInput, Loader, SortButton, ShoppingItem} from '../../component'
-import {axiosInstance} from '../../component/axios/axios'
+import { UserSessionContext } from '../../component/context/UserSessionProvider';
+import { SearchInput, Loader, SortButton, ShoppingItem } from '../../component';
+import { axiosInstance } from '../../component/axios/axios';
 
 export function ShoppingCart(){
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const { checkAuth } = useContext(UserSessionContext);
-  const navigate = useNavigate()
+  const [originalProducts, setOriginalProducts] = useState([]);
+  const [searchResultEmpty, setSearchResultEmpty] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleAuthentication()
@@ -39,12 +41,13 @@ export function ShoppingCart(){
       });
       if (response && response.data && response.data.line_items){
         setProducts(response.data.line_items);
+        setOriginalProducts(response.data.line_items);
+        setSearchResultEmpty(false);
       }else{
-        throw new Error ('Oops, an error occured. Sorry about the inconvenience, please try refreshing and contact us if the problem persists')
+        toast.error('Oops, an error occured. Please try refreshing and contact us if the problem persists')
       }
-      console.log(response.data)
     } catch (error) {
-      console.error('Failed to fetch products:', error)
+      toast.error('Failed to fetch products.')
     } finally {
       setIsLoading(false)
     }
@@ -53,12 +56,14 @@ export function ShoppingCart(){
   const handleSearch = (query) => {
     const searchTerms = query.split(',').map(term => term.trim().toLowerCase())
     if (query.length > 0) {
-      const searchedProducts = products.filter((item) => 
+      const searchedProducts = originalProducts.filter((item) => 
         searchTerms.some(term => item.product.title.toLowerCase().includes(term))
       );
       setProducts(searchedProducts);
+      setSearchResultEmpty(searchedProducts.length === 0);
     } else {
       fetchProducts();
+      setSearchResultEmpty(false);
     }
   };
 
@@ -163,14 +168,16 @@ export function ShoppingCart(){
     </div>
    {products.length === 0 ? (
       <>
-        <p className='mt-10 p-3 text-center text-4xl text-red-600'>Your shopping cart is empty</p>
+        <p className='mt-10 p-3 text-center text-4xl text-red-600'>
+          {originalProducts.length === 0 ? 'Your shopping cart is empty' : 'No items match your search criteria'}  
+        </p>
         <p className=' text-center text-s '>There are not products to show</p>
       </>
     ) : (
       <>
         <ul className='flex flex-col items-center mt-4 w-5/6'>
           {products.map((product, index) => {
-            const productData = product.product || {}; // Acceso a la propiedad `product`
+            const productData = product.product || {};
             const picture = (productData.pictures && productData.pictures.length > 0) 
               ? productData.pictures[0] 
               : 'default-image.png';

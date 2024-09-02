@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa';
 import { axiosInstance } from '../../component/axios/axios';
-import { Loader } from '../../component'
-import glassesGirl from '../../assets/futaba-persona-5.gif'
+import { Loader } from '../../component';
+import glassesGirl from '../../assets/futaba-persona-5.gif';
 import { UserSessionContext } from '../../component/context/UserSessionProvider';
 
 export function HomePage(){
