@@ -47,7 +47,7 @@ export function HomePage(){
       const authStatus = checkAuth();
       setIsAuthenticated(authStatus);
       if (!authStatus) {
-        navigate('/SignIn');
+        navigate('/sign-in');
       } else {
         fetchProducts();
       }

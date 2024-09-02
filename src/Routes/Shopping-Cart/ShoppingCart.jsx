@@ -8,9 +8,9 @@ import {axiosInstance} from '../../component/axios/axios'
 
 export function ShoppingCart(){
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const { isLoggedIn } = useContext(UserSessionContext)
   const [isLoading, setIsLoading] = useState(true)
   const [products, setProducts] = useState([]);
+  const { checkAuth } = useContext(UserSessionContext);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -26,17 +26,6 @@ export function ShoppingCart(){
     } else {
       fetchProducts()
     }
-  }
-
-  const checkAuth = () => {
-    const storedAccessToken = localStorage.getItem('accessToken')
-    const storedUid = localStorage.getItem('uid')
-    const storedClient = localStorage.getItem('client')
-
-    if (storedAccessToken && storedUid && storedClient) {
-      return true;
-    }
-    return false;
   }
 
   const fetchProducts = async () => {
@@ -160,7 +149,7 @@ export function ShoppingCart(){
   const totalPurchasePrice = calculateTotalPrice()
 
 
-  if (isLoading || !products) return <Loader /> 
+  if (!isAuthenticated || isLoading || !products) return <Loader /> 
 
  return(
   <section className='mt-8 m-auto md:max-w-[800px] md:mt-14 md:pb-5 md:rounded-3xl md:border md:border-solid md:border-slate-50 flex flex-col items-center '>
