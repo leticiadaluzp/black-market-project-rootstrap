@@ -35,7 +35,7 @@ export function Favorites(){
           'client': localStorage.getItem('client'),
         },
       });
-
+        console.log(response.data.data)
       if (Array.isArray(response.data.data)) {
         setProducts(response.data.data);
       } else {
@@ -51,7 +51,7 @@ export function Favorites(){
   const handleSearch = (query) => {
     const searchTerms = query.split(',').map(term => term.trim().toLowerCase())
     if (query.length > 0) {
-      const searchedProducts = products.filter((item) => 
+      const searchedProducts = products.filter((item) =>
         searchTerms.some(term => item.product.title.toLowerCase().includes(term))
       );
       setProducts(searchedProducts);
@@ -72,8 +72,8 @@ export function Favorites(){
 
   const handleSortByPriceDescAndAZ = () => {
     const sortedProducts = [...products].sort((a, b) => {
-    const numericPriceA = parseFloat(a.product.unit_price.replace('$', ''));
-    const numericPriceB = parseFloat(b.product.unit_price.replace('$', ''));
+    const numericPriceA = parseFloat(a.product.unit_price.replace('$', '').replace(',', '').trim())
+    const numericPriceB = parseFloat(b.product.unit_price.replace('$', '').replace(',', '').trim())
     if (numericPriceB !== numericPriceA) {
       return numericPriceB - numericPriceA;
     }
@@ -84,8 +84,8 @@ export function Favorites(){
 
   const handleSortByPriceAscAndAZ = () => {
     const sortedProducts = [...products].sort((a, b) => {
-      const numericPriceA = parseFloat(a.product.unit_price.replace('$', ''));
-      const numericPriceB = parseFloat(b.product.unit_price.replace('$', ''));
+      const numericPriceA = parseFloat(a.product.unit_price.replace('$', '').replace(',', '').trim());
+      const numericPriceB = parseFloat(b.product.unit_price.replace('$', '').replace(',', '').trim());
       if (numericPriceA !== numericPriceB) {
         return numericPriceA - numericPriceB;
       }
@@ -106,8 +106,8 @@ export function Favorites(){
       <SearchInput onSearch={handleSearch} />
       <div className='flex gap-5 mt-4 items-center justify-center flex-wrap px-3'>
         <h2 className='w-full text-center text-base md:text-xl'>Sort by:</h2>
-        <SortButton text='Higher price' onClick={handleSortByPriceAscAndAZ}/>
-        <SortButton text='Lower price' onClick={handleSortByPriceDescAndAZ}/>
+        <SortButton text='Higher price' onClick={handleSortByPriceDescAndAZ}/>
+        <SortButton text='Lower price' onClick={handleSortByPriceAscAndAZ}/>
         <SortButton text='A-Z' onClick={handleSortAZ}/>
         <SortButton text='Z-A' onClick={handleSortZA}/>
       </div>
@@ -118,8 +118,8 @@ export function Favorites(){
         <ul className='flex flex-col items-center mt-4 w-5/6'>
           {products.map((product, index) => {
           const productData = product.product || {};
-          const picture = (productData.pictures && productData.pictures.length > 0) 
-          ? productData.pictures[0] 
+          const picture = (productData.pictures && productData.pictures.length > 0)
+          ? productData.pictures[0]
           : 'default-image.png';
           return (
             <FavoriteItem
@@ -137,5 +137,5 @@ export function Favorites(){
       </>
       )}
     </section>
-  ) 
+  )
 }

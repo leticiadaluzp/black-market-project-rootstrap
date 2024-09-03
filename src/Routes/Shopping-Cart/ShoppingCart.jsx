@@ -18,7 +18,7 @@ export function ShoppingCart(){
   useEffect(() => {
     handleAuthentication()
     }, [])
-  
+
   const handleAuthentication = () => {
     setIsLoading(true)
     const authStatus = checkAuth()
@@ -56,7 +56,7 @@ export function ShoppingCart(){
   const handleSearch = (query) => {
     const searchTerms = query.split(',').map(term => term.trim().toLowerCase())
     if (query.length > 0) {
-      const searchedProducts = originalProducts.filter((item) => 
+      const searchedProducts = originalProducts.filter((item) =>
         searchTerms.some(term => item.product.title.toLowerCase().includes(term))
       );
       setProducts(searchedProducts);
@@ -79,8 +79,8 @@ export function ShoppingCart(){
 
   const handleSortByPriceDescAndAZ = () => {
     const sortedProducts = [...products].sort((a, b) => {
-    const numericPriceA = parseFloat(a.product.unit_price.replace('$', ''));
-    const numericPriceB = parseFloat(b.product.unit_price.replace('$', ''));
+    const numericPriceA = parseFloat(a.product.unit_price.replace('$', '').replace(',', '').trim());
+    const numericPriceB = parseFloat(b.product.unit_price.replace('$', '').replace(',', '').trim());
     if (numericPriceB !== numericPriceA) {
       return numericPriceB - numericPriceA;
     }
@@ -91,8 +91,8 @@ export function ShoppingCart(){
 
   const handleSortByPriceAscAndAZ = () => {
     const sortedProducts = [...products].sort((a, b) => {
-      const numericPriceA = parseFloat(a.product.unit_price.replace('$', ''));
-      const numericPriceB = parseFloat(b.product.unit_price.replace('$', ''));
+      const numericPriceA = parseFloat(a.product.unit_price.replace('$', '').replace(',', '').trim());
+      const numericPriceB = parseFloat(b.product.unit_price.replace('$', '').replace(',', '').trim());
       if (numericPriceA !== numericPriceB) {
         return numericPriceA - numericPriceB;
       }
@@ -147,14 +147,14 @@ export function ShoppingCart(){
       }
       return accumulator;
     }, 0);
-  
+
     return totalPrice;
   }
-  
+
   const totalPurchasePrice = calculateTotalPrice()
 
 
-  if (!isAuthenticated || isLoading || !products) return <Loader /> 
+  if (!isAuthenticated || isLoading || !products) return <Loader />
 
  return(
   <section className='mt-8 m-auto md:max-w-[800px] md:mt-14 md:pb-5 md:rounded-3xl md:border md:border-solid md:border-slate-50 flex flex-col items-center '>
@@ -169,7 +169,7 @@ export function ShoppingCart(){
    {products.length === 0 ? (
       <>
         <p className='mt-10 p-3 text-center text-4xl text-red-600'>
-          {originalProducts.length === 0 ? 'Your shopping cart is empty' : 'No items match your search criteria'}  
+          {originalProducts.length === 0 ? 'Your shopping cart is empty' : 'No items match your search criteria'}
         </p>
         <p className=' text-center text-s '>There are not products to show</p>
       </>
@@ -178,8 +178,8 @@ export function ShoppingCart(){
         <ul className='flex flex-col items-center mt-4 w-5/6'>
           {products.map((product, index) => {
             const productData = product.product || {};
-            const picture = (productData.pictures && productData.pictures.length > 0) 
-              ? productData.pictures[0] 
+            const picture = (productData.pictures && productData.pictures.length > 0)
+              ? productData.pictures[0]
               : 'default-image.png';
 
             return (
