@@ -122,7 +122,6 @@ export function ShoppingCart(){
   };
 
   const handleDelete = async (productId) => {
-    console.log("id:" , productId)
     try {
       await axiosInstance.delete(`/shopping_cart/line_items/${productId}`, {
         headers: {
@@ -132,7 +131,6 @@ export function ShoppingCart(){
         },
       });
       setProducts(prevProducts => prevProducts.filter(product => product.product.id !== productId));
-      console.log("prod dsp de eliminar" , products)
       window.location.reload();
     } catch (error) {
       toast.error('Failed to delete product.')
@@ -153,11 +151,56 @@ export function ShoppingCart(){
 
   const totalPurchasePrice = calculateTotalPrice()
 
+  const card_number = "4242424242424242"
+  const exp_month = 10
+  const exp_year = 2024
+  const cvc = "222"
+  const city = "La Plata"
+  const country = "AR"
+  const line_1 = "line_1"
+  const line_2 = "line_2"
+  const postal_code = "1900"
+  const state = "Buenos Aires"
+
+  const handlePurchase = async() => {
+        try {
+      const response = await axiosInstance.post('/orders',{
+        order: {
+          credit_card: {
+            card_number,
+            exp_month,
+            exp_year,
+            cvc
+          },
+          shipping_address: {
+            city,
+            country,
+            line_1,
+            line_2,
+            postal_code,
+            state
+          },
+        }
+      }, {
+        headers: {
+          'access-token': localStorage.getItem('accessToken'),
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client'),
+        },
+      });
+      toast.success(`The purchase was succesful!`);
+      setProducts(prevProducts => prevProducts.map(product => handleDelete(product.id)));
+      window.location.reload();
+    } catch (error) {
+      toast.error("Can't process the purchase. ",error.response.data.errors[0])
+    }
+  }
 
   if (!isAuthenticated || isLoading || !products) return <Loader />
 
  return(
   <section className='mt-8 m-auto md:max-w-[800px] md:mt-14 md:pb-5 md:rounded-3xl md:border md:border-solid md:border-slate-50 flex flex-col items-center '>
+    <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl mb-8'>Your shopping list</h1>
     < SearchInput onSearch={handleSearch} />
     <div className='flex gap-5 mt-4 items-center justify-center flex-wrap px-3'>
       <h2 className='w-full text-center text-base md:text-xl'>Sort by:</h2>
@@ -197,6 +240,9 @@ export function ShoppingCart(){
           })}
         </ul>
         <h3 className='mt-8 text-center text-xl mb-8 p-3 border border-gray-300 shadow-md rounded-md'>Total price: ${totalPurchasePrice} </h3>
+        <button onClick={handlePurchase}  className='m-auto w-32 h-20 border border-slate-50 border-solid rounded-lg transition-all ease-in-out duration-100 md:text-lg md:hover:bg-red-800 mb-6'>
+          Confirm purchase
+        </button>
       </>
     )}
   </section>

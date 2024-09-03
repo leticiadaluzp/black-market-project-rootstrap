@@ -7,7 +7,7 @@ export function ShoppingItem ({name, quantity, price, picture, onIncrement, onDe
         <div className='flex-shrink-0 w-24 h-24 md:w-12 md:h-12 overflow-hidden rounded'>
         <img src={picture} alt="product" className='w-full h-full object-cover' />
         </div>
-    <h2 className='w-10'>{name}</h2>
+    <h2 className='md:w-10'>{name}</h2>
     <div className='flex gap-8'>
         <div className='flex flex-col items-center md:w-12'>
         <h2>Quantity</h2>
