@@ -122,7 +122,6 @@ export function ShoppingCart(){
   };
 
   const handleDelete = async (productId) => {
-    console.log("id:" , productId)
     try {
       await axiosInstance.delete(`/shopping_cart/line_items/${productId}`, {
         headers: {
@@ -132,7 +131,6 @@ export function ShoppingCart(){
         },
       });
       setProducts(prevProducts => prevProducts.filter(product => product.product.id !== productId));
-      console.log("prod dsp de eliminar" , products)
       window.location.reload();
     } catch (error) {
       toast.error('Failed to delete product.')
@@ -153,23 +151,34 @@ export function ShoppingCart(){
 
   const totalPurchasePrice = calculateTotalPrice()
 
+  const card_number = "4242424242424242"
+  const exp_month = 10
+  const exp_year = 2024
+  const cvc = "222"
+  const city = "La Plata"
+  const country = "AR"
+  const line_1 = "line_1"
+  const line_2 = "line_2"
+  const postal_code = "1900"
+  const state = "Buenos Aires"
+
   const handlePurchase = async() => {
         try {
-      await axiosInstance.post('/orders',{
-        "order": {
-          "credit_card": {
-            "card_number": "4242424242424242",
-            "exp_month": 8,
-            "exp_year": 2024,
-            "cvc": "222"
+      const response = await axiosInstance.post('/orders',{
+        order: {
+          credit_card: {
+            card_number,
+            exp_month,
+            exp_year,
+            cvc
           },
-          "shipping_address": {
-            "city": "La Plata",
-            "country": "AR",
-            "line_1": "line_1",
-            "line_2": "line_2",
-            "postal_code": "1900",
-            "state": "Buenos Aires"
+          shipping_address: {
+            city,
+            country,
+            line_1,
+            line_2,
+            postal_code,
+            state
           },
         }
       }, {
@@ -181,10 +190,9 @@ export function ShoppingCart(){
       });
       toast.success(`The purchase was succesful!`);
       setProducts(prevProducts => prevProducts.map(product => handleDelete(product.id)));
-      console.log("prod dsp de eliminar" , products)
       window.location.reload();
     } catch (error) {
-      toast.error('Failed to complete transaction.')
+      toast.error("Can't process the purchase. ",error.response.data.errors[0])
     }
   }
 

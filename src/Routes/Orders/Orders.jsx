@@ -39,9 +39,9 @@ export function Orders(){
           'client': localStorage.getItem('client'),
         },
       });
-      if (response && response.data && response.data.line_items){
-        setProducts(response.data.line_items);
-        setOriginalProducts(response.data.line_items);
+      if (response && response.data && response.data.data){
+        setProducts(response.data.data);
+        setOriginalProducts(response.data.data);
       }
     } catch (error) {
       toast.error('Failed to fetch products.')
