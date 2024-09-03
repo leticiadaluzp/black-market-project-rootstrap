@@ -62,7 +62,7 @@ export function Orders(){
         <p className='mt-10 p-3 text-center text-4xl text-red-600'>
           {originalProducts.length === 0 ? 'Your orders are empty' : 'No items match your search criteria'}
         </p>
-        <p className=' text-center text-s '>There are not products to show</p>
+        <p className=' text-center text-s '>There are not orders to show</p>
       </>
     ) : (
       <>

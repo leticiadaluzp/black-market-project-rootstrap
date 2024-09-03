@@ -153,6 +153,39 @@ export function ShoppingCart(){
 
   const totalPurchasePrice = calculateTotalPrice()
 
+  const handlePurchase = async() => {
+        try {
+      await axiosInstance.post('/orders',{
+        "order": {
+          "credit_card": {
+            "card_number": "4242424242424242",
+            "exp_month": 8,
+            "exp_year": 2024,
+            "cvc": "222"
+          },
+          "shipping_address": {
+            "city": "La Plata",
+            "country": "AR",
+            "line_1": "line_1",
+            "line_2": "line_2",
+            "postal_code": "1900",
+            "state": "Buenos Aires"
+          },
+        }
+      }, {
+        headers: {
+          'access-token': localStorage.getItem('accessToken'),
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client'),
+        },
+      });
+      setProducts(prevProducts => prevProducts.map(product => handleDelete(product.id)));
+      console.log("prod dsp de eliminar" , products)
+      window.location.reload();
+    } catch (error) {
+      toast.error('Failed to complete transaction.')
+    }
+  }
 
   if (!isAuthenticated || isLoading || !products) return <Loader />
 
@@ -198,6 +231,9 @@ export function ShoppingCart(){
           })}
         </ul>
         <h3 className='mt-8 text-center text-xl mb-8 p-3 border border-gray-300 shadow-md rounded-md'>Total price: ${totalPurchasePrice} </h3>
+        <button onClick={handlePurchase}  className='m-auto w-32 h-20 border border-slate-50 border-solid rounded-lg transition-all ease-in-out duration-100 md:text-lg md:hover:bg-red-800 mb-6'>
+          Confirm purchase
+        </button>
       </>
     )}
   </section>
