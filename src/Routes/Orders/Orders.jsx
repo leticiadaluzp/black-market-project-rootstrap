@@ -42,8 +42,6 @@ export function Orders(){
       if (response && response.data && response.data.line_items){
         setProducts(response.data.line_items);
         setOriginalProducts(response.data.line_items);
-      }else{
-        toast.error('Oops, an error occured. Please try refreshing and contact us if the problem persists')
       }
     } catch (error) {
       toast.error('Failed to fetch products.')
