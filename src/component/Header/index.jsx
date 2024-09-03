@@ -47,17 +47,18 @@ export function Header() {
 
   const authLinks = (
     <ul className='flex md:pr-0.25 gap-[6px] md:gap-2 box-border'>
-      <ItemMenu text='Homepage' path='homepage' icon='home' permit='auth' />
-      <ItemMenu text='Shopping cart' path='shopping-cart' icon='cart'  permit='auth' />
-      <ItemMenu text='Favorites' path='favorite-products' icon='fav'  permit='auth' />
-      <ItemMenu text='Sign Out' path='/' onClick={logOut} icon='logOut'  permit='auth' />
+      <ItemMenu text='Homepage' path='homepage' icon='home' permit />
+      <ItemMenu text='Shopping cart' path='shopping-cart' icon='cart'  permit />
+      <ItemMenu text='Orders' path='orders' icon='order'  permit />
+      <ItemMenu text='Favorites' path='favorite-products' icon='fav'  permit />
+      <ItemMenu text='Sign Out' path='/' onClick={logOut} icon='logOut'  permit />
     </ul>
   );
 
   const guestLinks = (
     <ul className='flex md:pr-0.25 md:gap-2 box-border'>
-      <ItemMenu text='Sign In' path='sign-in' permit='guest' />
-      <ItemMenu text='Sign Up' path='sign-up' permit='guest' />
+      <ItemMenu text='Sign In' path='sign-in'  />
+      <ItemMenu text='Sign Up' path='sign-up'  />
     </ul>
   );
 
@@ -65,8 +66,8 @@ export function Header() {
     <>
       <ToastContainer />
       <header className='flex box-border justify-between w-full h-10 py-0.5 px-2.5 md:h-16 md:py-0 md:px-[10%] md:shadow-extra'>
-        <div>
-          <Link to={isLoggedIn ? 'homepage' : '/' } className='flex items-center pl-0.25 gap-1 pt-2 md:pt-4'>
+        <div className='flex items center'>
+          <Link to={isLoggedIn ? 'homepage' : '/' } className='flex items-center justify-center pl-0.25 gap-1 pt-2 md:pt-1'>
             <img src={logo} alt="logo" className='w-8 h-8' />
             <h1 className='font-logo text-sm md:text-lg'>Black Market</h1>
           </Link>
