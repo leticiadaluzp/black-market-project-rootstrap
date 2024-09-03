@@ -179,6 +179,7 @@ export function ShoppingCart(){
           'client': localStorage.getItem('client'),
         },
       });
+      toast.success(`The purchase was succesful!`);
       setProducts(prevProducts => prevProducts.map(product => handleDelete(product.id)));
       console.log("prod dsp de eliminar" , products)
       window.location.reload();
