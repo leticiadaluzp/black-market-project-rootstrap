@@ -158,6 +158,7 @@ export function ShoppingCart(){
 
  return(
   <section className='mt-8 m-auto md:max-w-[800px] md:mt-14 md:pb-5 md:rounded-3xl md:border md:border-solid md:border-slate-50 flex flex-col items-center '>
+    <h1 className='text-2xl mt-3 md:mt-10 md:text-4xl mb-8'>Your shopping list</h1>
     < SearchInput onSearch={handleSearch} />
     <div className='flex gap-5 mt-4 items-center justify-center flex-wrap px-3'>
       <h2 className='w-full text-center text-base md:text-xl'>Sort by:</h2>
