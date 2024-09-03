@@ -6,4 +6,5 @@ import { NotFound } from './NotFound/NotFound'
 import { ProductDetail } from './Product/Product'
 import { ShoppingCart } from './Shopping-Cart/ShoppingCart'
 import { Favorites } from './Favorites/Favorites'
-export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail, ShoppingCart, Favorites}
+import { Orders } from './Orders/Orders'
+export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail, ShoppingCart, Favorites, Orders}
