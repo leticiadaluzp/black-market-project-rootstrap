@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App';
 import ProtectedRoute from '../component/ProtectedRoute/ProtectedRoute';
-import {Home, HomePage, SignIn, SignUp, NotFound, ProductDetail, ShoppingCart, RecoverPassword} from '../Routes'
+import {Home, HomePage, SignIn, SignUp, NotFound, ProductDetail, ShoppingCart, RecoverPassword, UpdatePassword} from '../Routes'
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: 'recover-password',
         element: <RecoverPassword/>
+      },
+            {
+        path: 'update-password',
+        element: <UpdatePassword/>
       },
       {
         path: 'homePage',

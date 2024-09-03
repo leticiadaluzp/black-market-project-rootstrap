@@ -6,4 +6,5 @@ import { NotFound } from './NotFound/NotFound'
 import { ProductDetail } from './Product/Product'
 import { ShoppingCart } from './Shopping-Cart/ShoppingCart'
 import { RecoverPassword } from './Recover-Password/RecoverPassword'
-export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail, ShoppingCart, RecoverPassword}
+import { UpdatePassword } from './Update-password/UpdatePassword'
+export{SignIn, SignUp, Home, HomePage, NotFound, ProductDetail, ShoppingCart, RecoverPassword, UpdatePassword}
