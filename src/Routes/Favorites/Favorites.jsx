@@ -35,7 +35,6 @@ export function Favorites(){
           'client': localStorage.getItem('client'),
         },
       });
-        console.log(response.data.data)
       if (Array.isArray(response.data.data)) {
         setProducts(response.data.data);
       } else {
