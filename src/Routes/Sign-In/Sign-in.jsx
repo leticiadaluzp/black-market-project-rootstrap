@@ -12,7 +12,7 @@ export function SignIn (){
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { handleLogin } = useContext(UserSessionContext)
+  const { setIsLoggedIn } = useContext(UserSessionContext)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,7 +33,7 @@ export function SignIn (){
       localStorage.setItem('uid', uid);
       localStorage.setItem('client', client);
 
-      handleLogin();
+      setIsLoggedIn(true);
       toast.success("User login successful!", {
         autoClose: 1500,
       });

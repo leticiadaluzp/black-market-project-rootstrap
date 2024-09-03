@@ -13,6 +13,7 @@ export function Header() {
 
   const removeAuth = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('authToken');
     localStorage.removeItem('uid');
     localStorage.removeItem('client');
     setIsLoggedIn(false);
@@ -48,6 +49,7 @@ export function Header() {
     <ul className='flex md:pr-0.25 gap-[6px] md:gap-2 box-border'>
       <ItemMenu text='Homepage' path='homepage' icon='home' permit='auth' />
       <ItemMenu text='Shopping cart' path='shopping-cart' icon='cart'  permit='auth' />
+      <ItemMenu text='Favorites' path='favorite-products' icon='fav'  permit='auth' />
       <ItemMenu text='Sign Out' path='/' onClick={logOut} icon='logOut'  permit='auth' />
     </ul>
   );

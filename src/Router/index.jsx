@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App';
 import ProtectedRoute from '../component/ProtectedRoute/ProtectedRoute';
-import {Home, HomePage, SignIn, SignUp, NotFound, ProductDetail, ShoppingCart, RecoverPassword, UpdatePassword} from '../Routes'
+import {Home, HomePage, SignIn, SignUp, NotFound, ProductDetail, ShoppingCart, Favorites,  RecoverPassword, UpdatePassword} from '../Routes'
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +46,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ShoppingCart/>
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'favorite-products',
+        element: (
+          <ProtectedRoute>
+            <Favorites/>
           </ProtectedRoute>
         )
       },
