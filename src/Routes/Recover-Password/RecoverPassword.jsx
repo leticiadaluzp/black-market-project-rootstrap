@@ -9,7 +9,7 @@ export function RecoverPassword (){
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sendEmail, setEmailSend] = useState(true)
+  const [sendEmail, setEmailSend] = useState(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
